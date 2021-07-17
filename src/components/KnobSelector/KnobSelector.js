@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { KnobButton, Options, Wrapper } from './KnobSelector.styles';
 
-const KnobSelector = ({ options, onChange, currentOption }) => {
+const KnobSelector = ({ className, options, onChange, currentOption }) => {
     options = Object.entries(options);
     const index = options.findIndex(
         ([label, value]) => value === currentOption
@@ -13,7 +13,7 @@ const KnobSelector = ({ options, onChange, currentOption }) => {
     };
 
     return (
-        <Wrapper>
+        <Wrapper className={className}>
             <KnobButton>
                 <button
                     onClick={onClick}

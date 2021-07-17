@@ -7767,7 +7767,7 @@ vn = [
     ],
 ];
 
-const DATA = {
+const SENTENCES = {
     krs,
     ens,
     its,
@@ -7783,4 +7783,4 @@ const DATA = {
     pankrs,
     panens,
 };
-export default DATA;
+export default SENTENCES;

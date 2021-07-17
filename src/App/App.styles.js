@@ -27,61 +27,77 @@ export const Wrapper = styled.div`
     }
 `;
 export const InfoTable = styled.div`
-    /* height: 15.2rem; */
+    height: 15.2rem;
     overflow: hidden;
-
-    /* display: grid;
-    grid-template-columns: ;
+    display: grid;
+    grid-gap: 0.2rem;
     grid-template-areas:
-        'langues result typing'
-        'langues result typing'
-        'langues result typing'
-        'sentences goal speed accuracy count'
-        'sentences goal speed accuracy count'
-        'sentences goal author author author';
+        'langues result result result result typing typing typing notice'
+        'langues result result result result typing typing typing notice'
+        'langues result result result result typing typing typing typing-effect'
+        'sentences goal speed speed accuracy accuracy count count typing-effect'
+        'sentences goal speed speed accuracy accuracy count count typing-effect'
+        'sentences goal author author author author author author typing-effect';
+    grid-template-columns: 14rem 11rem repeat(6, 1fr) 32.3rem;
+    grid-template-rows: repeat(6, 1fr);
     .languages-options {
-        grid-area: 'langues';
+        grid-area: langues;
     }
     .sentences-options {
-        grid-area: 'sentences';
+        grid-area: sentences;
+    }
+    .goal-results {
+        grid-area: result;
     }
     .typing-options {
-        grid-area: 'typing';
+        grid-area: typing;
     }
-    .result {
-        grid-area: 'result';
+    .notice {
+        grid-area: notice;
+    }
+    .typing-effect {
+        grid-area: typing-effect;
     }
     .goal-speed {
-        grid-area: 'goal-speed';
+        grid-area: goal;
     }
     .speed {
-        grid-area: 'speed';
+        grid-area: speed;
     }
     .accuracy {
-        grid-area: 'accuracy';
+        grid-area: accuracy;
     }
     .count {
-        grid-area: 'count';
+        grid-area: count;
     }
     .author {
-        grid-area: 'accuracy';
-    } */
+        grid-area: author;
+    }
     & > * {
         background-color: var(--boxbg);
+        border-radius: 0.3rem;
     }
 `;
-export const BoxResult = styled.div`
+
+export const TypeSentences = styled.div``;
+export const OptionTyping = styled.div`
     display: flex;
     flex-direction: column;
-    font-size: 1.4rem;
-    padding: 0.3rem 0.7rem;
-    span {
-        display: block;
+    justify-content: center;
+    align-items: center;
+    row-gap: 1rem;
+`;
+export const Author = styled.div`
+    display: grid;
+    place-items: center;
+`;
+export const Notice = styled.div`
+    padding: 0.7rem 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.9rem;
+    & > *:not(p) {
         text-align: right;
-        font-size: 1.8rem;
+        font-size: 1.2rem;
     }
 `;
-export const TypeSentences = styled.div``;
-export const OptionTyping = styled.div``;
-export const Author = styled.div``;
-export const Result = styled.div``;

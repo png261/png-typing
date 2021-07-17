@@ -14,6 +14,8 @@ export const Wrapper = styled.div`
     input {
         width: 100%;
         height: 2.8rem;
+        margin-left: -0.2rem;
+        margin-top: 0.3rem;
         font-family: inherit;
         line-height: 1.13;
         caret-color: var(--caret);
@@ -43,5 +45,22 @@ export const Next = styled.p`
     span {
         margin-right: 10px;
         font-size: 1.8rem;
+    }
+`;
+
+export const GoalBar = styled.div`
+    width: 100%;
+    position: relative;
+    height: 0.4rem;
+    background-color: var(--gb);
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: ${({ value }) => `${value}%`};
+        height: 100%;
+        background-color: var(--gbs);
+        transition: all 0.5s;
     }
 `;

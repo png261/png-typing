@@ -1,14 +1,14 @@
-import { Char } from './ValidArea.styles';
+import { Char, Wrapper } from './ValidArea.styles';
 const ValidArea = ({ curSentence, typedText }) => {
     return (
-        <div>
+        <Wrapper>
             {[...curSentence].map((c, i) => (
                 <Char>
                     {c}
                     {c !== typedText[i] && typedText[i] && <div></div>}
                 </Char>
             ))}
-        </div>
+        </Wrapper>
     );
 };
 

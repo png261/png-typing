@@ -1,6 +1,5 @@
-import React from 'react';
 import ValidArea from '../ValidArea/ValidArea';
-import { Next, Wrapper } from './TypingArea.styles';
+import { GoalBar, Next, Wrapper } from './TypingArea.styles';
 
 const TypingArea = ({
     curSentence,
@@ -15,12 +14,13 @@ const TypingArea = ({
             <input
                 type="text"
                 autoComplete="off"
+                onPaste={(e) => e.preventDefault()}
                 placeholder="Typing works like above text and enter(space)"
                 onChange={onChange}
                 value={typedText}
                 onKeyDown={onKeyDown}
             />
-            {/* goal-bar */}
+            <GoalBar value={12} />
             <Next>
                 <span>NEXT</span>
                 {nexSentence}

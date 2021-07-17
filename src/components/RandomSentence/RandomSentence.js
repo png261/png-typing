@@ -13,7 +13,7 @@ const RandomSentence = ({ data, intervals }) => {
             clearInterval(randomInterval);
         };
     }, []);
-    return <div>{sentence.join(' - ')}</div>;
+    return <p>{sentence}</p>;
 };
 
 export default RandomSentence;

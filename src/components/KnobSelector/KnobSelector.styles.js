@@ -2,11 +2,19 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
     display: flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    column-gap: 1rem;
+    padding: 1rem 0.5rem;
 `;
 export const Options = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: 100%;
+    font-size: 1rem;
 `;
 
 export const KnobButton = styled.div`

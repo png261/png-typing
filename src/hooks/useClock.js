@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { formatTime } from 'src/helpers/time';
 
 const useClock = () => {
-    const [time, setTime] = useState(() => {
+    const [timeString, setTimeString] = useState(() => {
         const now = new Date();
         return formatTime(now);
     });
@@ -10,14 +10,14 @@ const useClock = () => {
     useEffect(() => {
         const timeInterval = setInterval(() => {
             const now = new Date();
-            setTime(formatTime(now));
+            setTimeString(formatTime(now));
         }, 1000);
         return () => {
             clearInterval(timeInterval);
         };
     }, []);
 
-    return time;
+    return { timeString };
 };
 
 export default useClock;
