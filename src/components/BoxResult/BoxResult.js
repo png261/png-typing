@@ -1,9 +1,9 @@
 import React from 'react';
 import { Wrapper } from './BoxResult.style';
 
-const BoxResult = ({ label, value, className }) => {
+const BoxResult = ({ label, value, isHighLight, textLeft }) => {
     return (
-        <Wrapper className={className}>
+        <Wrapper isHighLight={isHighLight} textLeft={textLeft}>
             <label>{label}</label>
             <span>{value}</span>
         </Wrapper>

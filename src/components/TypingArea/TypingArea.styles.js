@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-    height: 18.6rem;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -53,12 +52,13 @@ export const GoalBar = styled.div`
     position: relative;
     height: 0.4rem;
     background-color: var(--gb);
+    overflow: hidden;
     &:before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
-        width: ${({ value }) => `${value}%`};
+        width: ${({ CPM }) => `${CPM / 5}%`};
         height: 100%;
         background-color: var(--gbs);
         transition: all 0.5s;

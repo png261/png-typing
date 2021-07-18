@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
     height: 100vh;
     main {
-        width: 58.1rem;
-        height: 38.6rem;
+        width: 90.7rem;
+        height: 34.4rem;
         padding: 0.2rem;
         overflow: hidden;
         position: relative;
@@ -13,83 +13,99 @@ export const Wrapper = styled.div`
         box-shadow: rgba(0, 0, 0, 0.3) 0.4rem 0.4rem 0 0;
         left: 50%;
         transform: translate(-50%, -50%);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        row-gap: 0.2rem;
         border-radius: 0.5rem;
+        display: grid;
+        grid-gap: 0.2rem;
+        grid-template-areas:
+            'langues result result result result result typing typing typing notice'
+            'langues result result result result result typing typing typing notice'
+            'langues result result result result result typing typing typing typing-effect'
+            'sentences pangram pangram speed speed accuracy accuracy count count typing-effect'
+            'sentences goal goal speed speed accuracy accuracy count count typing-effect'
+            'sentences goal goal author author author author author author typing-effect'
+            'typing-area typing-area typing-area typing-area typing-area typing-area typing-area typing-area typing-area typing-area';
+        grid-template-columns: 14rem repeat(8, 1fr) 32.3rem;
+        grid-template-rows: repeat(3, 2.5rem) 2.8rem 1.7rem 2.8rem 1fr;
+        .typing-area {
+            grid-area: typing-area;
+        }
+        .languages-options {
+            grid-area: langues;
+        }
+        .sentences-options {
+            grid-area: sentences;
+        }
+        .pangram {
+            grid-area: pangram;
+        }
+        .goal-results {
+            grid-area: result;
+            font-size: 1rem;
+        }
+        .typing-options {
+            grid-area: typing;
+        }
+        .notice {
+            grid-area: notice;
+            font-size: 1rem;
+        }
+        .typing-effect {
+            grid-area: typing-effect;
+        }
+        .goal-speed {
+            grid-area: goal;
+            grid-column: span 1.5;
+        }
+        .speed {
+            grid-area: speed;
+        }
+        .accuracy {
+            grid-area: accuracy;
+        }
+        .count {
+            grid-area: count;
+        }
+        .author {
+            grid-area: author;
+            font-size: 1rem;
+        }
+        & > * {
+            background-color: var(--boxbg);
+            border-radius: 0.3rem;
+        }
     }
-    @media (min-width: 1025px) {
+    @media (max-width: 1024px) {
         main {
-            width: 90.7rem;
-            height: 34.4rem;
+            width: 58.1rem;
+            grid-template-areas:
+                'langues result result result result typing typing typing'
+                'langues result result result result typing typing typing'
+                'langues result result result result typing typing typing'
+                'sentences goal speed speed accuracy accuracy count count'
+                'sentences goal speed speed accuracy accuracy count count'
+                'sentences goal author author author author author author'
+                'typing-area typing-area typing-area typing-area typing-area typing-area typing-area typing-area typing-area';
+            grid-template-columns: 14rem 11rem repeat(6, 1fr);
+            .notice,
+            .typing-effect {
+                display: none;
+            }
         }
     }
 `;
-export const InfoTable = styled.div`
-    height: 15.2rem;
-    overflow: hidden;
-    display: grid;
-    grid-gap: 0.2rem;
-    grid-template-areas:
-        'langues result result result result typing typing typing notice'
-        'langues result result result result typing typing typing notice'
-        'langues result result result result typing typing typing typing-effect'
-        'sentences goal speed speed accuracy accuracy count count typing-effect'
-        'sentences goal speed speed accuracy accuracy count count typing-effect'
-        'sentences goal author author author author author author typing-effect';
-    grid-template-columns: 14rem 11rem repeat(6, 1fr) 32.3rem;
-    grid-template-rows: repeat(6, 1fr);
-    .languages-options {
-        grid-area: langues;
-    }
-    .sentences-options {
-        grid-area: sentences;
-    }
-    .goal-results {
-        grid-area: result;
-    }
-    .typing-options {
-        grid-area: typing;
-    }
-    .notice {
-        grid-area: notice;
-    }
-    .typing-effect {
-        grid-area: typing-effect;
-    }
-    .goal-speed {
-        grid-area: goal;
-    }
-    .speed {
-        grid-area: speed;
-    }
-    .accuracy {
-        grid-area: accuracy;
-    }
-    .count {
-        grid-area: count;
-    }
-    .author {
-        grid-area: author;
-    }
-    & > * {
-        background-color: var(--boxbg);
-        border-radius: 0.3rem;
-    }
-`;
 
-export const TypeSentences = styled.div``;
 export const OptionTyping = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     row-gap: 1rem;
+    height: 100%;
 `;
 export const Author = styled.div`
     display: grid;
     place-items: center;
+    height: 100%;
 `;
 export const Notice = styled.div`
     padding: 0.7rem 1rem;

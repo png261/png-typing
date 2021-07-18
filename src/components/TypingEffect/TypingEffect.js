@@ -1,8 +1,11 @@
+import useKeyBoard from 'src/hooks/useKeyBoard';
 import { Wrapper } from './TypingEffect.styles';
 
-const TypingEffect = ({ curKey = '', className }) => {
+const TypingEffect = () => {
+    const { currentKey } = useKeyBoard();
+
     return (
-        <Wrapper className={className} curKey={curKey}>
+        <Wrapper currentKey={currentKey}>
             <span style={{ opacity: 0 }}></span>
             <span className="Escape"></span>
             <span className="Escape"></span>

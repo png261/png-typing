@@ -7,6 +7,7 @@ const TypingArea = ({
     nexSentence,
     onChange,
     onKeyDown,
+    CPM,
 }) => {
     return (
         <Wrapper>
@@ -16,11 +17,11 @@ const TypingArea = ({
                 autoComplete="off"
                 onPaste={(e) => e.preventDefault()}
                 placeholder="Typing works like above text and enter(space)"
-                onChange={onChange}
                 value={typedText}
+                onChange={onChange}
                 onKeyDown={onKeyDown}
             />
-            <GoalBar value={12} />
+            <GoalBar CPM={CPM} />
             <Next>
                 <span>NEXT</span>
                 {nexSentence}

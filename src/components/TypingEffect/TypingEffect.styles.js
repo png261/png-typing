@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
         margin-left: 0.2rem;
     }
 
-    ${({ curKey }) => `.${curKey}{
+    ${({ currentKey }) => `.${currentKey}{
             background: var(--timebtn);
             transition: 0.1s;
     }`}

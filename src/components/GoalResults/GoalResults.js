@@ -1,9 +1,9 @@
 import React from 'react';
 import { Result, Wrapper } from './GoalResults.styles';
 
-const GoalResults = ({ results, className }) => {
+const GoalResults = ({ results }) => {
     return (
-        <Wrapper className={className}>
+        <Wrapper>
             {results.map(({ wpm, cpm, acc }, i) => (
                 <Result>
                     <span>{i + 1}</span>
