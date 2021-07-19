@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Wrapper } from './PangramSwitch.styles';
 
-const PangramSwitch = ({ label, onChange, value }) => {
+const PangramSwitch = ({ label, onActive, value }) => {
     return (
-        <Wrapper onClick={onChange}>
+        <Wrapper onClick={onActive}>
             <label>{label}</label>
             <Switch active={value} />
         </Wrapper>

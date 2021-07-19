@@ -16,10 +16,11 @@ export const Wrapper = styled.div`
         transition: 0.2s;
         margin-top: 0.2rem;
         margin-left: 0.2rem;
+        transition: all 0.5s ease 0s;
     }
 
     ${({ currentKey }) => `.${currentKey}{
-            background: var(--timebtn);
-            transition: 0.1s;
+            background: var(--timebtn); 
+            transition: all 0.1s ease 0s;
     }`}
 `;

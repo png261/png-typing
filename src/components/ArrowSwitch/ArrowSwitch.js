@@ -2,7 +2,6 @@ import React from 'react';
 import { NextButton, PrevButton, Value, Wrapper } from './ArrowSwitch.styles';
 
 const ArrowSwitch = ({ options, currentOption, value, onChange }) => {
-    console.log(value);
     const index = options.findIndex((option) => option === currentOption);
 
     const changeValue = (option) => {

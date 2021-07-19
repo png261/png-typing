@@ -1,18 +1,25 @@
+import { useEffect, useRef } from 'react';
 import ValidArea from '../ValidArea/ValidArea';
 import { GoalBar, Next, Wrapper } from './TypingArea.styles';
 
 const TypingArea = ({
-    curSentence,
+    currentSentence,
     typedText,
-    nexSentence,
+    nextSentence,
     onChange,
     onKeyDown,
     CPM,
 }) => {
+    const input = useRef();
+    useEffect(() => {
+        input.current.focus();
+    }, []);
+
     return (
         <Wrapper>
-            <ValidArea curSentence={curSentence} typedText={typedText} />
+            <ValidArea curSentence={currentSentence} typedText={typedText} />
             <input
+                ref={input}
                 type="text"
                 autoComplete="off"
                 onPaste={(e) => e.preventDefault()}
@@ -24,7 +31,7 @@ const TypingArea = ({
             <GoalBar CPM={CPM} />
             <Next>
                 <span>NEXT</span>
-                {nexSentence}
+                {nextSentence}
             </Next>
         </Wrapper>
     );
