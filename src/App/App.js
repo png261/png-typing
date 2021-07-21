@@ -4,8 +4,10 @@ import BoxResult from 'src/components/BoxResult/BoxResult';
 import Clock from 'src/components/Clock/Clock';
 import GoalResults from 'src/components/GoalResults/GoalResults';
 import KnobSelector from 'src/components/KnobSelector/KnobSelector';
+import { Overlaps } from 'src/components/Overlaps/Overlaps.styles';
 import PangramSwitch from 'src/components/PangramSwitch/PangramSwitch';
 import RandomSentence from 'src/components/RandomSentence/RandomSentence';
+import ResultModal from 'src/components/ResultModal/ResultModal';
 import Switch from 'src/components/Switch/Switch';
 import TypingArea from 'src/components/TypingArea/TypingArea';
 import TypingEffect from 'src/components/TypingEffect/TypingEffect';
@@ -47,6 +49,7 @@ const App = () => {
         times: 5,
         minute: '01:00',
     });
+
     const stopWatch = useStopWatch();
     const countDown = useCountDown(modeValue.minute.split(':')[0] * 60000);
 
@@ -55,6 +58,8 @@ const App = () => {
     const [goalCPM, setGoalCPM] = useState(0);
     const [CPM, setCPM] = useState(0);
     const [goalResults, setGoalResults] = useState([]);
+
+    const [isShowFinalResult, setIsShowFinalResult] = useState(false);
     const [typedText, setTypedText] = useState('');
 
     const [currentSentence, currentAuthor] = sentences[currentIndex] || [
@@ -97,13 +102,14 @@ const App = () => {
         }
         return setNextIndex((prevState) => ++prevState);
     };
-    const onKeyDown = () => {
+    const onKeyDown = (e) => {
         if (typedText.length === 1 && !stopWatch.isCounting) {
             stopWatch.startCount();
             if (mode === 'minute') {
                 countDown.startCount();
             }
         }
+        if (e.code !== 'Enter') return;
 
         const isDone = typedText.length >= currentSentence.length;
         if (!isDone) return;
@@ -154,8 +160,34 @@ const App = () => {
         setCPM(getCPM(typedText, stopWatch.timer));
     }, [stopWatch.timer]);
 
+    useEffect(() => {
+        if (mode === 'times' && countTimes === modeValue.times) {
+            setIsShowFinalResult(true);
+        }
+    }, [countTimes]);
+
+    useEffect(() => {
+        if (mode === 'minute' && countDown.time === '00:00') {
+            setIsShowFinalResult(true);
+        }
+    }, [countDown.time]);
+    console.log('test');
+
     return (
         <Wrapper>
+            {isShowFinalResult && (
+                <>
+                    <ResultModal
+                        mode={`${modeValue[mode]}${mode}`}
+                        language={
+                            { ens: 'English', vn: 'Vietnamese' }[languages]
+                        }
+                        typingLength={typingLength}
+                        goalResults={goalResults}
+                    />
+                    <Overlaps onClick={() => setIsShowFinalResult(false)} />
+                </>
+            )}
             <main>
                 <div className="languages-options">
                     <KnobSelector
@@ -191,7 +223,7 @@ const App = () => {
                             value={
                                 mode === 'minute' &&
                                 countDown.isCounting &&
-                                `${countDown.minutes}:${countDown.seconds}`
+                                countDown.time
                             }
                         />
                     </OptionTyping>
