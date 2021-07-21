@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import ArrowSwitch from 'src/components/ArrowSwitch/ArrowSwitch';
 import BoxResult from 'src/components/BoxResult/BoxResult';
 import Clock from 'src/components/Clock/Clock';
@@ -11,81 +11,73 @@ import TypingArea from 'src/components/TypingArea/TypingArea';
 import TypingEffect from 'src/components/TypingEffect/TypingEffect';
 import ALL_DATA from 'src/constants/allData';
 import NOTICES from 'src/constants/notices';
-import TYPING_MODE_OPTIONS from 'src/constants/typingMode';
-import { getRandomNumber } from 'src/helpers/random';
+import MODE_OPTIONS from 'src/constants/typingMode';
+import { randomNumber } from 'src/helpers/random';
 import { getAccuracy, getCPM, getWPM } from 'src/helpers/typing';
 import useCountDown from 'src/hooks/useCountDown';
 import useStopWatch from 'src/hooks/useStopWatch';
 import { Author, Notice, OptionTyping, Wrapper } from './App.styles';
 
 const App = () => {
+    const [languages, setLanguages] = useState('ens');
     const [typingLength, setTypingLength] = useState('sentences');
-    const [languages, setLanguages] = useState('vn');
-    const DATA = ALL_DATA[typingLength][languages];
 
-    const getRandomParagraph = () => DATA[getRandomNumber(DATA.length)];
     const getSentences = () => {
-        return typingLength === 'paragraph' ? getRandomParagraph() : DATA;
+        const DATA = ALL_DATA[typingLength][languages];
+        if (typingLength === 'paragraph') {
+            return DATA[randomNumber(DATA.length)];
+        }
+        return DATA;
     };
 
     const [sentences, setSentences] = useState(getSentences);
 
-    useEffect(() => {
-        setSentences(getSentences());
-    }, [DATA, languages]);
-
-    const [typedSentences, setTypedSentences] = useState([]);
-
-    console.log(sentences.length);
-    const getRandomIndexFromSentences = () => getRandomNumber(sentences.length);
-
-    const [currentSentenceIndex, setCurrentSentenceIndex] = useState(
-        getRandomIndexFromSentences
+    const [currentIndex, setCurrentIndex] = useState(
+        randomNumber(sentences.length)
     );
-
-    const [currentSentence, currentAuthor] = sentences[currentSentenceIndex];
-    console.log({ sentences, languages, currentSentenceIndex });
-
-    const getNextSentenceRandomIndex = () => {
-        let randomIndex;
-        do {
-            randomIndex = getRandomIndexFromSentences();
-        } while (typedSentences.includes(randomIndex));
-        return randomIndex;
+    const [typedIndexes, setTypedIndexes] = useState([currentIndex]);
+    const randomNextIndex = () => {
+        const num = randomNumber(sentences.length);
+        return typedIndexes.includes(num) ? randomNextIndex() : num;
     };
+    const [nextIndex, setNextIndex] = useState(randomNextIndex);
 
-    const [nextSentenceIndex, setNextSentenceIndex] = useState(
-        getNextSentenceRandomIndex
-    );
-    console.log({ nextSentenceIndex });
-
-    const [nextSentence, nextAuthor] = sentences[nextSentenceIndex];
-
-    const [typingMode, setTypingMode] = useState('times');
-    const [typingModeValue, setTypingModeValue] = useState({
+    const [mode, setMode] = useState('times');
+    const [modeValue, setModeValue] = useState({
         times: 5,
         minute: '01:00',
     });
+    const stopWatch = useStopWatch();
+    const countDown = useCountDown(modeValue.minute.split(':')[0] * 60000);
+
     const [countTimes, setCountTime] = useState(0);
     const [accuracy, setAccuracy] = useState(0);
     const [goalCPM, setGoalCPM] = useState(0);
     const [CPM, setCPM] = useState(0);
     const [goalResults, setGoalResults] = useState([]);
-
     const [typedText, setTypedText] = useState('');
+
+    const [currentSentence, currentAuthor] = sentences[currentIndex] || [
+        'A',
+        'B',
+    ];
+    const [nextSentence] = sentences[nextIndex] || ['A', 'B'];
 
     const reset = () => {
         stopWatch.stopCount();
         setTypedText('');
     };
-
-    const getGoal = () => {
+    const onTyping = ({ target: { value } }) => {
+        setTypedText(value);
+    };
+    const changeModeValue = (value) => {
+        setModeValue((prevState) => ({
+            ...prevState,
+            [mode]: value,
+        }));
+    };
+    const updateResult = () => {
         setCountTime((prevState) => ++prevState);
-        setTypedSentences((prevState) => [...prevState, currentSentenceIndex]);
-        if (typedSentences.length === sentences) {
-            setTypedSentences([currentSentenceIndex]);
-        }
-
         const goal = {
             wpm: getWPM(typedText, currentSentence, stopWatch.timer),
             cpm: CPM,
@@ -93,38 +85,22 @@ const App = () => {
         };
         setGoalResults((prevState) => [...prevState, goal]);
         setGoalCPM((prevState) => Math.max(prevState, CPM));
+
         reset();
 
-        if (typingLength === 'paragraph') {
-            if (nextSentenceIndex === sentences.length) {
-                setSentences(getRandomParagraph);
-                setCurrentSentenceIndex(0);
-                setNextSentenceIndex(1);
-            }
-            setNextSentenceIndex((prevState) => ++prevState);
+        if (typingLength !== 'paragraph') {
+            return setNextIndex(randomNextIndex());
         }
-        setNextSentenceIndex(getNextSentenceRandomIndex());
-    };
 
-    const onTyping = ({ target: { value } }) => {
-        setTypedText(value);
+        if (nextIndex === sentences.length) {
+            return setNextIndex(0);
+        }
+        return setNextIndex((prevState) => ++prevState);
     };
-
-    const changeTypingModeValue = (value) => {
-        setTypingModeValue((prevState) => ({
-            ...prevState,
-            [typingMode]: value,
-        }));
-    };
-    const stopWatch = useStopWatch();
-    const countDown = useCountDown(
-        typingModeValue.minute.split(':')[0] * 60000
-    );
-
     const onKeyDown = () => {
         if (typedText.length === 1 && !stopWatch.isCounting) {
             stopWatch.startCount();
-            if (typingMode === 'minute') {
+            if (mode === 'minute') {
                 countDown.startCount();
             }
         }
@@ -132,41 +108,51 @@ const App = () => {
         const isDone = typedText.length >= currentSentence.length;
         if (!isDone) return;
 
-        const isWongTooMuch = getAccuracy(typedText, currentSentence) < 10;
-        if (isWongTooMuch) return reset();
-
-        setCurrentSentenceIndex(nextSentenceIndex);
-        getGoal();
+        setCurrentIndex(nextIndex);
+        updateResult();
+    };
+    const turnOnPangram = () => {
+        setTypingLength('sentences');
+        setLanguages('pangram');
+    };
+    const turnOffPangram = () => {
+        setTypingLength('sentences');
+        setLanguages('ens');
     };
 
-    useEffect(() => {
-        const updateSentence = () => {
+    useLayoutEffect(() => {
+        setSentences(getSentences());
+        return () => {
+            setSentences([]);
+        };
+    }, [typingLength, languages]);
+
+    useLayoutEffect(() => {
+        function updateSentences() {
             if (typingLength === 'paragraph') {
-                setCurrentSentenceIndex(0);
-                setNextSentenceIndex(1);
+                setCurrentIndex(0);
+                setNextIndex(1);
                 return;
             }
-            setCurrentSentenceIndex(getRandomIndexFromSentences());
-            setNextSentenceIndex(getRandomIndexFromSentences());
-        };
-        updateSentence();
+            setCurrentIndex(randomNumber(sentences.length));
+            setNextIndex(randomNumber(sentences.length));
+        }
+        updateSentences();
+        return reset;
+    }, [sentences]);
 
-        return () => reset();
-    }, [typingLength, languages]);
+    useEffect(() => {
+        setTypedIndexes((prevState) => [...prevState, currentIndex]);
+    }, [currentIndex]);
 
     useEffect(() => {
         if (typedText.length === 0) reset();
         setAccuracy(getAccuracy(typedText, currentSentence));
     }, [typedText]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setCPM(getCPM(typedText, stopWatch.timer));
     }, [stopWatch.timer]);
-
-    const turnOnPangram = () => {
-        setTypingLength('sentences');
-        setLanguages('pangram');
-    };
 
     return (
         <Wrapper>
@@ -195,15 +181,15 @@ const App = () => {
                     <OptionTyping>
                         <Switch
                             options={{ Times: 'times', Minute: 'minute' }}
-                            currentOption={typingMode}
-                            onChange={setTypingMode}
+                            currentOption={mode}
+                            onChange={setMode}
                         />
                         <ArrowSwitch
-                            options={TYPING_MODE_OPTIONS[typingMode]}
-                            currentOption={typingModeValue[typingMode]}
-                            onChange={changeTypingModeValue}
+                            options={MODE_OPTIONS[mode]}
+                            currentOption={modeValue[mode]}
+                            onChange={changeModeValue}
                             value={
-                                typingMode === 'minute' &&
+                                mode === 'minute' &&
                                 countDown.isCounting &&
                                 `${countDown.minutes}:${countDown.seconds}`
                             }
@@ -223,7 +209,8 @@ const App = () => {
                     <PangramSwitch
                         label="Pangram"
                         onActive={turnOnPangram}
-                        value={languages === 'pangram'}
+                        onOff={turnOffPangram}
+                        isActive={languages === 'pangram'}
                     />
                 </div>
                 <div className="goal-speed">

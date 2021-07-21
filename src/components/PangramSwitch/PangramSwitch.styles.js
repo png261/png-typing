@@ -6,6 +6,10 @@ export const Wrapper = styled.div`
     align-items: center;
     height: 100%;
     padding: 0.5rem 0.7rem;
+    &,
+    label {
+        cursor: pointer;
+    }
 `;
 export const Switch = styled.div`
     position: absolute;

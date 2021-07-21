@@ -1,3 +1,4 @@
+import React from 'react';
 import { KnobButton, Options, Wrapper } from './KnobSelector.styles';
 
 const KnobSelector = ({ options, onChange, currentOption }) => {
@@ -8,8 +9,8 @@ const KnobSelector = ({ options, onChange, currentOption }) => {
 
     const onClick = () => {
         if (!onChange) return;
-        const changeOptionValue = options[(index + 1) % options.length][1];
-        onChange(changeOptionValue);
+        const [option, optionValue] = options[(index + 1) % options.length];
+        onChange(optionValue);
     };
 
     return (

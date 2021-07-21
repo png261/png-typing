@@ -1,3 +1,4 @@
+import React from 'react';
 import useKeyBoard from 'src/hooks/useKeyBoard';
 import { Wrapper } from './TypingEffect.styles';
 

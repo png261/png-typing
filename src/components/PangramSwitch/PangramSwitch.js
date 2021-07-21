@@ -1,11 +1,11 @@
 import React from 'react';
 import { Switch, Wrapper } from './PangramSwitch.styles';
 
-const PangramSwitch = ({ label, onActive, value }) => {
+const PangramSwitch = ({ label, onActive, onOff, isActive }) => {
     return (
-        <Wrapper onClick={onActive}>
+        <Wrapper onClick={isActive ? onOff : onActive}>
             <label>{label}</label>
-            <Switch active={value} />
+            <Switch active={isActive} />
         </Wrapper>
     );
 };

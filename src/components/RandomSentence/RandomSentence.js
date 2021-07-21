@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getRandomFromData } from 'src/helpers/random';
+import React from 'react';
 
 const RandomSentence = ({ data, intervals }) => {
     const [sentence, setSentence] = useState(getRandomFromData(data));

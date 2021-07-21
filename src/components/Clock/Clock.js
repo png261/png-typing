@@ -1,3 +1,4 @@
+import React from 'react';
 import useClock from 'src/hooks/useClock';
 
 const Clock = () => {
