@@ -4,6 +4,7 @@ import useClock from 'src/hooks/useClock';
 import { ResultBox } from './ResultModal.styles';
 
 const ResultModal = ({ mode, language, typingLength, goalResults }) => {
+    console.log(goalResults);
     const getOS = () => {
         if (navigator.appVersion.indexOf('Mac') != -1) {
             return 'MacOS';
@@ -19,7 +20,6 @@ const ResultModal = ({ mode, language, typingLength, goalResults }) => {
         return 'UnKnow';
     };
     const OS = getOS();
-
     const avgAccuracy = Math.round(
         goalResults.reduce((total, { acc }) => total + acc, 0) /
             goalResults.length
@@ -41,7 +41,8 @@ const ResultModal = ({ mode, language, typingLength, goalResults }) => {
         <ResultBox>
             <div id="tws-result-wrap">
                 <div id="tws-result" className="tws-result-on">
-                    <div id="rstDate">{timeString}</div>
+                    <div id="siteName">PNG typing</div>
+                    <div id="rstDate">{new Date().toDateString()}</div>
                     <div id="rstOS">{OS}</div>
                     <div id="rstMode">
                         {language}, {typingLength}, Normal, {mode}

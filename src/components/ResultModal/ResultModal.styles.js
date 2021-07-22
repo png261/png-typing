@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import FinalResultForm from 'src/assets/images/FinalResultForm.svg';
 
 export const ResultBox = styled.div`
     position: absolute;
@@ -13,9 +14,15 @@ export const ResultBox = styled.div`
         border-radius: 0.3rem;
         opacity: 0;
         transition: all 0.5s;
-        background: no-repeat
-            url('https://typing.works/img/result/resultbg.svg');
+        background: no-repeat url(${FinalResultForm});
         background-size: contain;
+        #siteName {
+            top: 2rem;
+            font-size: 30px;
+            font-weight: bold;
+            text-align: left;
+            font-style: normal;
+        }
     }
     .tws-result-on {
         width: 320px;

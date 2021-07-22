@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
+import AllResults from 'src/components/GoalResults/GoalResults';
 import ArrowSwitch from 'src/components/ArrowSwitch/ArrowSwitch';
 import BoxResult from 'src/components/BoxResult/BoxResult';
 import Clock from 'src/components/Clock/Clock';
-import GoalResults from 'src/components/GoalResults/GoalResults';
 import KnobSelector from 'src/components/KnobSelector/KnobSelector';
 import { Overlaps } from 'src/components/Overlaps/Overlaps.styles';
 import PangramSwitch from 'src/components/PangramSwitch/PangramSwitch';
@@ -47,51 +47,66 @@ const App = () => {
     const [mode, setMode] = useState('times');
     const [modeValue, setModeValue] = useState({
         times: 5,
-        minute: '01:00',
+        minutes: 1,
     });
 
     const stopWatch = useStopWatch();
-    const countDown = useCountDown(modeValue.minute.split(':')[0] * 60000);
+    const countDown = useCountDown(modeValue.minutes * 60);
 
     const [countTimes, setCountTime] = useState(0);
     const [accuracy, setAccuracy] = useState(0);
     const [goalCPM, setGoalCPM] = useState(0);
     const [CPM, setCPM] = useState(0);
-    const [goalResults, setGoalResults] = useState([]);
+    const [allResults, setAllResults] = useState([]);
+    const [resultsToAvg, setResultsToAvg] = useState([]);
+    console.log(resultsToAvg);
 
     const [isShowFinalResult, setIsShowFinalResult] = useState(false);
     const [typedText, setTypedText] = useState('');
 
     const [currentSentence, currentAuthor] = sentences[currentIndex] || [
-        'A',
-        'B',
+        '',
+        '',
     ];
-    const [nextSentence] = sentences[nextIndex] || ['A', 'B'];
+    const [nextSentence] = sentences[nextIndex] || ['', ''];
 
-    const reset = () => {
+    const resetTyping = () => {
         stopWatch.stopCount();
         setTypedText('');
     };
     const onTyping = ({ target: { value } }) => {
         setTypedText(value);
     };
+    const resetMode = () => {
+        countDown.stopCount();
+        setResultsToAvg([]);
+    };
+
     const changeModeValue = (value) => {
         setModeValue((prevState) => ({
             ...prevState,
             [mode]: value,
         }));
+        resetMode();
     };
     const updateResult = () => {
         setCountTime((prevState) => ++prevState);
+
         const goal = {
             wpm: getWPM(typedText, currentSentence, stopWatch.timer),
             cpm: CPM,
             acc: accuracy,
         };
-        setGoalResults((prevState) => [...prevState, goal]);
+        setAllResults((prevState) => [...prevState, goal]);
+        if (
+            (mode === 'minutes' && countDown.isCounting) ||
+            (mode === 'times' && typeof modeValue.times === 'number')
+        ) {
+            setResultsToAvg((prevState) => [...prevState, goal]);
+        }
         setGoalCPM((prevState) => Math.max(prevState, CPM));
 
-        reset();
+        resetTyping();
 
         if (typingLength !== 'paragraph') {
             return setNextIndex(randomNextIndex());
@@ -105,8 +120,8 @@ const App = () => {
     const onKeyDown = (e) => {
         if (typedText.length === 1 && !stopWatch.isCounting) {
             stopWatch.startCount();
-            if (mode === 'minute') {
-                countDown.startCount();
+            if (mode === 'minutes') {
+                countDown.startCount(modeValue.minutes * 60);
             }
         }
         if (e.code !== 'Enter') return;
@@ -144,7 +159,7 @@ const App = () => {
             setNextIndex(randomNumber(sentences.length));
         }
         updateSentences();
-        return reset;
+        return resetTyping;
     }, [sentences]);
 
     useEffect(() => {
@@ -152,26 +167,68 @@ const App = () => {
     }, [currentIndex]);
 
     useEffect(() => {
-        if (typedText.length === 0) reset();
+        if (typedText.length === 0) resetTyping();
         setAccuracy(getAccuracy(typedText, currentSentence));
     }, [typedText]);
 
     useLayoutEffect(() => {
         setCPM(getCPM(typedText, stopWatch.timer));
     }, [stopWatch.timer]);
+    useEffect(() => {
+        resetMode();
+    }, [mode]);
 
     useEffect(() => {
-        if (mode === 'times' && countTimes === modeValue.times) {
+        if (mode === 'times' && resultsToAvg.length === modeValue.times) {
             setIsShowFinalResult(true);
         }
     }, [countTimes]);
 
     useEffect(() => {
-        if (mode === 'minute' && countDown.time === '00:00') {
+        if (mode === 'minutes' && countDown.seconds === 0) {
             setIsShowFinalResult(true);
         }
     }, [countDown.time]);
-    console.log('test');
+
+    const hideFinalResultModal = (e) => {
+        if (e.code !== 'Esc') setIsShowFinalResult(false);
+        resetMode();
+    };
+    useEffect(() => {
+        if (isShowFinalResult) {
+            document.body.addEventListener('keydown', hideFinalResultModal);
+        }
+        return () => {
+            document.body.removeEventListener('keydown', hideFinalResultModal);
+        };
+    }, [isShowFinalResult]);
+
+    const formatTime = (duration) => {
+        if (!duration) return modeValue.minutes;
+
+        const minutes = Math.trunc(duration / 60)
+            .toString()
+            .padStart(2, '0');
+        const seconds = Math.floor(duration - minutes * 60)
+            .toString()
+            .padStart(2, '0');
+
+        return `${minutes}:${seconds}`;
+    };
+
+    const [minutesFormatted, setMinutesFormatted] = useState(
+        formatTime(modeValue.minutes * 60)
+    );
+
+    useEffect(() => {
+        function updateMinutesDisplay() {
+            if (countDown.isCounting) {
+                return setMinutesFormatted(formatTime(countDown.seconds));
+            }
+            setMinutesFormatted(formatTime(modeValue.minutes * 60));
+        }
+        updateMinutesDisplay();
+    }, [countDown]);
 
     return (
         <Wrapper>
@@ -183,9 +240,9 @@ const App = () => {
                             { ens: 'English', vn: 'Vietnamese' }[languages]
                         }
                         typingLength={typingLength}
-                        goalResults={goalResults}
+                        goalResults={resultsToAvg}
                     />
-                    <Overlaps onClick={() => setIsShowFinalResult(false)} />
+                    <Overlaps />
                 </>
             )}
             <main>
@@ -207,12 +264,12 @@ const App = () => {
                     />
                 </div>
                 <div className="goal-results">
-                    <GoalResults results={goalResults} />
+                    <AllResults results={allResults} />
                 </div>
                 <div className="typing-options">
                     <OptionTyping>
                         <Switch
-                            options={{ Times: 'times', Minute: 'minute' }}
+                            options={{ Times: 'times', Minutes: 'minutes' }}
                             currentOption={mode}
                             onChange={setMode}
                         />
@@ -220,11 +277,7 @@ const App = () => {
                             options={MODE_OPTIONS[mode]}
                             currentOption={modeValue[mode]}
                             onChange={changeModeValue}
-                            value={
-                                mode === 'minute' &&
-                                countDown.isCounting &&
-                                countDown.time
-                            }
+                            value={mode === 'minutes' && minutesFormatted}
                         />
                     </OptionTyping>
                 </div>

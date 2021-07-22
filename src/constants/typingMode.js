@@ -1,10 +1,5 @@
 const TYPING_MODE_OPTIONS = {
     times: [5, 10, 15, 20, '∞'],
-    minute: [
-        ...[...new Array(10).keys()].map(
-            (t) => `${String(t + 1).padStart(2, '0')}:00`
-        ),
-        '∞',
-    ],
+    minutes: [...[...new Array(10).keys()].map((n) => n + 1), '∞'],
 };
 export default TYPING_MODE_OPTIONS;
