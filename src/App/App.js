@@ -52,6 +52,7 @@ const App = () => {
 
     const stopWatch = useStopWatch();
     const countDown = useCountDown(modeValue.minutes * 60);
+    console.log(countDown.seconds);
 
     const [countTimes, setCountTime] = useState(0);
     const [accuracy, setAccuracy] = useState(0);
@@ -59,7 +60,6 @@ const App = () => {
     const [CPM, setCPM] = useState(0);
     const [allResults, setAllResults] = useState([]);
     const [resultsToAvg, setResultsToAvg] = useState([]);
-    console.log(resultsToAvg);
 
     const [isShowFinalResult, setIsShowFinalResult] = useState(false);
     const [typedText, setTypedText] = useState('');
@@ -89,6 +89,7 @@ const App = () => {
         }));
         resetMode();
     };
+
     const updateResult = () => {
         setCountTime((prevState) => ++prevState);
 
@@ -120,9 +121,14 @@ const App = () => {
     const onKeyDown = (e) => {
         if (typedText.length === 1 && !stopWatch.isCounting) {
             stopWatch.startCount();
-            if (mode === 'minutes') {
-                countDown.startCount(modeValue.minutes * 60);
-            }
+        }
+
+        if (
+            typedText.length === 1 &&
+            mode === 'minutes' &&
+            !countDown.isCounting
+        ) {
+            countDown.startCount(modeValue.minutes * 60);
         }
         if (e.code !== 'Enter') return;
 
@@ -188,7 +194,7 @@ const App = () => {
         if (mode === 'minutes' && countDown.seconds === 0) {
             setIsShowFinalResult(true);
         }
-    }, [countDown.time]);
+    }, [countDown.seconds]);
 
     const hideFinalResultModal = (e) => {
         if (e.code !== 'Esc') setIsShowFinalResult(false);

@@ -11,18 +11,16 @@ const useCountDown = (secondsInput) => {
         if (!duration) {
             stopCount();
         }
-        setSeconds(duration);
+        setSeconds(10);
         setIsCounting(true);
     };
 
     useEffect(() => {
-        const timeInterval =
-            isCounting && seconds >= 0
-                ? setInterval(() => {
-                      setSeconds((preState) => preState - 1);
-                  }, 1000)
-                : '';
+        if (!isCounting || seconds <= 0) return;
 
+        const timeInterval = setInterval(() => {
+            setSeconds((preState) => preState - 1);
+        }, 1000);
         return () => clearInterval(timeInterval);
     }, [isCounting, seconds]);
 
