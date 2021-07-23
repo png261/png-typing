@@ -1,5 +1,4 @@
 import React from 'react';
-import { formatTime } from 'src/helpers/time';
 import useClock from 'src/hooks/useClock';
 import { ResultBox } from './ResultModal.styles';
 
@@ -36,7 +35,7 @@ const ResultModal = ({ mode, language, typingLength, goalResults }) => {
         goalResults.reduce((total, { wpm }) => total + wpm, 0) /
             goalResults.length
     );
-    const { timeString } = useClock();
+
     return (
         <ResultBox>
             <div id="tws-result-wrap">

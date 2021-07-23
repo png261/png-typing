@@ -52,7 +52,6 @@ const App = () => {
 
     const stopWatch = useStopWatch();
     const countDown = useCountDown(modeValue.minutes * 60);
-    console.log(countDown.seconds);
 
     const [countTimes, setCountTime] = useState(0);
     const [accuracy, setAccuracy] = useState(0);
@@ -60,6 +59,7 @@ const App = () => {
     const [CPM, setCPM] = useState(0);
     const [allResults, setAllResults] = useState([]);
     const [resultsToAvg, setResultsToAvg] = useState([]);
+    console.log(resultsToAvg);
 
     const [isShowFinalResult, setIsShowFinalResult] = useState(false);
     const [typedText, setTypedText] = useState('');
@@ -191,7 +191,11 @@ const App = () => {
     }, [countTimes]);
 
     useEffect(() => {
-        if (mode === 'minutes' && countDown.seconds === 0) {
+        if (
+            mode === 'minutes' &&
+            countDown.seconds === 0 &&
+            resultsToAvg.length > 0
+        ) {
             setIsShowFinalResult(true);
         }
     }, [countDown.seconds]);
@@ -210,8 +214,6 @@ const App = () => {
     }, [isShowFinalResult]);
 
     const formatTime = (duration) => {
-        if (!duration) return modeValue.minutes;
-
         const minutes = Math.trunc(duration / 60)
             .toString()
             .padStart(2, '0');
