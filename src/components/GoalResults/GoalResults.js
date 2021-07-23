@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Result, Wrapper } from './GoalResults.styles';
 
-const GoalResults = ({ results }) => {
+const GoalResults = () => {
     const wrapper = useRef(null);
+    const results = useSelector((state) => state.results);
 
     useEffect(() => {
         wrapper.current.scroll({

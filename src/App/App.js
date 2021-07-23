@@ -1,48 +1,41 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
-import AllResults from 'src/components/GoalResults/GoalResults';
+import { useDispatch, useSelector } from 'react-redux';
 import ArrowSwitch from 'src/components/ArrowSwitch/ArrowSwitch';
 import BoxResult from 'src/components/BoxResult/BoxResult';
 import Clock from 'src/components/Clock/Clock';
+import FinalResultBox from 'src/components/FinalResultBox/FinalResultBox';
+import AllResults from 'src/components/GoalResults/GoalResults';
 import KnobSelector from 'src/components/KnobSelector/KnobSelector';
+import { Modal } from 'src/components/Modal/Modal.styles';
 import { Overlaps } from 'src/components/Overlaps/Overlaps.styles';
 import PangramSwitch from 'src/components/PangramSwitch/PangramSwitch';
 import RandomSentence from 'src/components/RandomSentence/RandomSentence';
-import ResultModal from 'src/components/ResultModal/ResultModal';
 import Switch from 'src/components/Switch/Switch';
 import TypingArea from 'src/components/TypingArea/TypingArea';
 import TypingEffect from 'src/components/TypingEffect/TypingEffect';
-import ALL_DATA from 'src/constants/allData';
 import NOTICES from 'src/constants/notices';
 import MODE_OPTIONS from 'src/constants/typingMode';
-import { randomNumber } from 'src/helpers/random';
 import { getAccuracy, getCPM, getWPM } from 'src/helpers/typing';
 import useCountDown from 'src/hooks/useCountDown';
+import useGetData from 'src/hooks/useGetData';
+import useGetSentences from 'src/hooks/useGetSentences';
 import useStopWatch from 'src/hooks/useStopWatch';
+import { updateLanguage } from 'src/slices/language';
+import { addResult } from 'src/slices/results';
+import { updateTypingLength } from 'src/slices/typingLength';
 import { Author, Notice, OptionTyping, Wrapper } from './App.styles';
 
 const App = () => {
-    const [languages, setLanguages] = useState('ens');
-    const [typingLength, setTypingLength] = useState('sentences');
+    const dispatch = useDispatch();
+    const language = useSelector((state) => state.language);
+    const typingLength = useSelector((state) => state.typingLength);
 
-    const getSentences = () => {
-        const DATA = ALL_DATA[typingLength][languages];
-        if (typingLength === 'paragraph') {
-            return DATA[randomNumber(DATA.length)];
-        }
-        return DATA;
-    };
+    const setLanguage = (lang) => dispatch(updateLanguage(lang));
+    const setTypingLength = (lengthOption) =>
+        dispatch(updateTypingLength(lengthOption));
 
-    const [sentences, setSentences] = useState(getSentences);
-
-    const [currentIndex, setCurrentIndex] = useState(
-        randomNumber(sentences.length)
-    );
-    const [typedIndexes, setTypedIndexes] = useState([currentIndex]);
-    const randomNextIndex = () => {
-        const num = randomNumber(sentences.length);
-        return typedIndexes.includes(num) ? randomNextIndex() : num;
-    };
-    const [nextIndex, setNextIndex] = useState(randomNextIndex);
+    const { currentSentence, currentAuthor, nextSentence, goToNextSentence } =
+        useGetSentences();
 
     const [mode, setMode] = useState('times');
     const [modeValue, setModeValue] = useState({
@@ -57,18 +50,10 @@ const App = () => {
     const [accuracy, setAccuracy] = useState(0);
     const [goalCPM, setGoalCPM] = useState(0);
     const [CPM, setCPM] = useState(0);
-    const [allResults, setAllResults] = useState([]);
     const [resultsToAvg, setResultsToAvg] = useState([]);
-    console.log(resultsToAvg);
 
     const [isShowFinalResult, setIsShowFinalResult] = useState(false);
     const [typedText, setTypedText] = useState('');
-
-    const [currentSentence, currentAuthor] = sentences[currentIndex] || [
-        '',
-        '',
-    ];
-    const [nextSentence] = sentences[nextIndex] || ['', ''];
 
     const resetTyping = () => {
         stopWatch.stopCount();
@@ -98,7 +83,7 @@ const App = () => {
             cpm: CPM,
             acc: accuracy,
         };
-        setAllResults((prevState) => [...prevState, goal]);
+        dispatch(addResult(goal));
         if (
             (mode === 'minutes' && countDown.isCounting) ||
             (mode === 'times' && typeof modeValue.times === 'number')
@@ -108,15 +93,7 @@ const App = () => {
         setGoalCPM((prevState) => Math.max(prevState, CPM));
 
         resetTyping();
-
-        if (typingLength !== 'paragraph') {
-            return setNextIndex(randomNextIndex());
-        }
-
-        if (nextIndex === sentences.length) {
-            return setNextIndex(0);
-        }
-        return setNextIndex((prevState) => ++prevState);
+        goToNextSentence();
     };
     const onKeyDown = (e) => {
         if (typedText.length === 1 && !stopWatch.isCounting) {
@@ -134,43 +111,17 @@ const App = () => {
 
         const isDone = typedText.length >= currentSentence.length;
         if (!isDone) return;
-
-        setCurrentIndex(nextIndex);
         updateResult();
     };
+
     const turnOnPangram = () => {
         setTypingLength('sentences');
-        setLanguages('pangram');
+        setLanguage('pangram');
     };
     const turnOffPangram = () => {
         setTypingLength('sentences');
-        setLanguages('ens');
+        setLanguage('ens');
     };
-
-    useLayoutEffect(() => {
-        setSentences(getSentences());
-        return () => {
-            setSentences([]);
-        };
-    }, [typingLength, languages]);
-
-    useLayoutEffect(() => {
-        function updateSentences() {
-            if (typingLength === 'paragraph') {
-                setCurrentIndex(0);
-                setNextIndex(1);
-                return;
-            }
-            setCurrentIndex(randomNumber(sentences.length));
-            setNextIndex(randomNumber(sentences.length));
-        }
-        updateSentences();
-        return resetTyping;
-    }, [sentences]);
-
-    useEffect(() => {
-        setTypedIndexes((prevState) => [...prevState, currentIndex]);
-    }, [currentIndex]);
 
     useEffect(() => {
         if (typedText.length === 0) resetTyping();
@@ -200,11 +151,12 @@ const App = () => {
         }
     }, [countDown.seconds]);
 
-    const hideFinalResultModal = (e) => {
-        if (e.code !== 'Esc') setIsShowFinalResult(false);
-        resetMode();
-    };
     useEffect(() => {
+        const hideFinalResultModal = (e) => {
+            if (e.code !== 'Esc') setIsShowFinalResult(false);
+            resetMode();
+        };
+
         if (isShowFinalResult) {
             document.body.addEventListener('keydown', hideFinalResultModal);
         }
@@ -242,14 +194,16 @@ const App = () => {
         <Wrapper>
             {isShowFinalResult && (
                 <>
-                    <ResultModal
-                        mode={`${modeValue[mode]}${mode}`}
-                        language={
-                            { ens: 'English', vn: 'Vietnamese' }[languages]
-                        }
-                        typingLength={typingLength}
-                        goalResults={resultsToAvg}
-                    />
+                    <Modal>
+                        <FinalResultBox
+                            mode={`${modeValue[mode]}${mode}`}
+                            language={
+                                { ens: 'English', vn: 'Vietnamese' }[language]
+                            }
+                            typingLength={typingLength}
+                            goalResults={resultsToAvg}
+                        />
+                    </Modal>
                     <Overlaps />
                 </>
             )}
@@ -257,8 +211,8 @@ const App = () => {
                 <div className="languages-options">
                     <KnobSelector
                         options={{ English: 'ens', Vietnamese: 'vn' }}
-                        onChange={setLanguages}
-                        currentOption={languages}
+                        onChange={setLanguage}
+                        currentOption={language}
                     />
                 </div>
                 <div className="sentences-options">
@@ -272,7 +226,7 @@ const App = () => {
                     />
                 </div>
                 <div className="goal-results">
-                    <AllResults results={allResults} />
+                    <AllResults />
                 </div>
                 <div className="typing-options">
                     <OptionTyping>
@@ -303,7 +257,7 @@ const App = () => {
                         label="Pangram"
                         onActive={turnOnPangram}
                         onOff={turnOffPangram}
-                        isActive={languages === 'pangram'}
+                        isActive={language === 'pangram'}
                     />
                 </div>
                 <div className="goal-speed">
