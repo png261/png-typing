@@ -2,16 +2,19 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const results = createSlice({
     name: 'results',
-    initialState: [],
+    initialState: { all: [], avg: [] },
     reducers: {
         addResult(state, action) {
-            state.push(action.payload);
+            state.all.push(action.payload);
         },
-        removeAllResults() {
-            return [];
+        addResultAvg(state, action) {
+            state.avg.push(action.payload);
+        },
+        resetResultAvg(state, action) {
+            state.avg = [];
         },
     },
 });
 
-export const { addResult, removeAllResults } = results.actions;
+export const { addResult, addResultAvg, resetResultAvg } = results.actions;
 export default results.reducer;

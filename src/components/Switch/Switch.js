@@ -14,8 +14,8 @@ const Switch = ({ options, currentOption, onChange }) => {
 
     return (
         <Button onClick={onClick} className={index ? 'active' : ''}>
-            {options.map(([label, _]) => (
-                <span>{label}</span>
+            {options.map(([label, value], i) => (
+                <span key={i}>{label}</span>
             ))}
         </Button>
     );

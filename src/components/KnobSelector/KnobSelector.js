@@ -22,8 +22,8 @@ const KnobSelector = ({ options, onChange, currentOption }) => {
                 ></button>
             </KnobButton>
             <Options>
-                {options.map(([label, value]) => (
-                    <span>{label}</span>
+                {options.map(([label, value], i) => (
+                    <span key={i}>{label}</span>
                 ))}
             </Options>
         </Wrapper>

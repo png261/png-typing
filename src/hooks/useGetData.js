@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ALL_DATA from 'src/constants/allData';
 import { randomNumber } from 'src/helpers/random';

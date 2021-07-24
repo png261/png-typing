@@ -38,8 +38,10 @@ const useGetSentences = () => {
     useEffect(() => {
         const isFull =
             typedSentences.length === data.length &&
-            typedSentences.every(([sentence]) =>
-                data.some(([dataSentence]) => dataSentence === sentence)
+            data.every(([sentence]) =>
+                typedSentences.some(
+                    ([dataSentence]) => dataSentence === sentence
+                )
             );
         if (isFull) return setTypedSentences([data[nextIndex][0]]);
         setTypedSentences((prevState) => [...prevState, data[currentIndex][0]]);

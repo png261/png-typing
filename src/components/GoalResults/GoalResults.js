@@ -4,7 +4,7 @@ import { Result, Wrapper } from './GoalResults.styles';
 
 const GoalResults = () => {
     const wrapper = useRef(null);
-    const results = useSelector((state) => state.results);
+    const results = useSelector((state) => state.results.all);
 
     useEffect(() => {
         wrapper.current.scroll({
