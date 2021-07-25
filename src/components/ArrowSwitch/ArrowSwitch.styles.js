@@ -7,7 +7,9 @@ export const Wrapper = styled.div`
 export const Value = styled.p`
     font-size: 1.8rem;
     line-height: 1;
-    ${({ currentOption }) => currentOption === '∞' && `font-size: 2.8rem`}
+    ${({ currentOption }) =>
+        currentOption === '∞' &&
+        `font-size: 3rem;letter-spacing:-0.7px;line-height:0.6`}
 `;
 
 const Button = `

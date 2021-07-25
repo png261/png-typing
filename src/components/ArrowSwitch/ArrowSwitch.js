@@ -5,16 +5,19 @@ const ArrowSwitch = ({ options, currentOption, value, onChange }) => {
     const index = options.findIndex((option) => option === currentOption);
 
     const changeValue = (option) => {
-        let newIndex = (options.length + index + option) % options.length;
+        const newIndex = (options.length + index + option) % options.length;
         onChange(options[newIndex]);
     };
+    const goToPrev = () => () => changeValue(-1);
+    const goToNext = () => () => changeValue(-1);
+
     return (
         <Wrapper>
-            <PrevButton onClick={() => changeValue(-1)}></PrevButton>
+            <PrevButton onClick={goToPrev}></PrevButton>
             <Value currentOption={currentOption}>
                 {value || currentOption}
             </Value>
-            <NextButton onClick={() => changeValue(1)}></NextButton>
+            <NextButton onClick={goToNext}></NextButton>
         </Wrapper>
     );
 };

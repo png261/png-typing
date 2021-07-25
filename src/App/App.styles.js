@@ -94,19 +94,6 @@ export const Wrapper = styled.div`
     }
 `;
 
-export const OptionTyping = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 1rem;
-    height: 100%;
-`;
-export const Author = styled.div`
-    display: grid;
-    place-items: center;
-    height: 100%;
-`;
 export const Notice = styled.div`
     padding: 0.7rem 1rem;
     display: flex;

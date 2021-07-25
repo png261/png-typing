@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const Button = styled.div`
     position: relative;
     cursor: pointer;
-    height: 2.4rem;
-    width: 9.4rem;
+    height: 2.5rem;
+    width: 10rem;
     z-index: 1;
     display: flex;
     border: 0.1rem solid #000;

@@ -27,6 +27,9 @@ const ModeSelector = () => {
     const countDown = useCountDown();
 
     useEffect(() => {
+        if (typeof modeValue.minutes !== 'number')
+            return setMinutesFormatted(modeValue.minutes);
+
         if (countDown.isCounting) {
             return setMinutesFormatted(formatMinute(countDown.seconds));
         }
