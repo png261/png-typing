@@ -4,7 +4,7 @@ import { randomNumber } from 'src/helpers/random';
 import useGetData from './useGetData';
 
 const useGetSentences = () => {
-    const { data } = useGetData();
+    const { data, getNewData } = useGetData();
     const [currentIndex, setCurrentIndex] = useState(randomNumber(data.length));
 
     const [currentSentence, currentAuthor] = data[currentIndex] || ['', ''];
@@ -36,15 +36,24 @@ const useGetSentences = () => {
     };
 
     useEffect(() => {
-        const isFull =
-            typedSentences.length === data.length &&
-            data.every(([sentence]) =>
-                typedSentences.some(
-                    ([dataSentence]) => dataSentence === sentence
-                )
-            );
-        if (isFull) return setTypedSentences([data[nextIndex][0]]);
-        setTypedSentences((prevState) => [...prevState, data[currentIndex][0]]);
+        if (typingLength === 'paragraph' && currentIndex === data.length) {
+            getNewData();
+        }
+        if (typingLength !== 'paragraph') {
+            const isFull =
+                typedSentences.length === data.length &&
+                data.every(([sentence]) =>
+                    typedSentences.some(
+                        ([dataSentence]) => dataSentence === sentence
+                    )
+                );
+            if (isFull) return setTypedSentences([data[nextIndex][0]]);
+
+            setTypedSentences((prevState) => [
+                ...prevState,
+                data[currentIndex][0],
+            ]);
+        }
     }, [currentIndex]);
 
     useEffect(() => {

@@ -8,8 +8,8 @@ const ArrowSwitch = ({ options, currentOption, value, onChange }) => {
         const newIndex = (options.length + index + option) % options.length;
         onChange(options[newIndex]);
     };
-    const goToPrev = () => () => changeValue(-1);
-    const goToNext = () => () => changeValue(-1);
+    const goToPrev = () => changeValue(-1);
+    const goToNext = () => changeValue(-1);
 
     return (
         <Wrapper>

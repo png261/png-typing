@@ -15,11 +15,12 @@ const useGetData = () => {
     const typingLength = useSelector((state) => state.typingLength);
     const [data, setData] = useState(getSentences);
 
+    const getNewData = () => setData(getSentences);
     useLayoutEffect(() => {
-        setData(getSentences);
+        getNewData();
     }, [language, typingLength]);
 
-    return { data };
+    return { data, getNewData };
 };
 
 export default useGetData;
