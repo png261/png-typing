@@ -11,7 +11,7 @@ const LanguageSelector = () => {
         <KnobSelector
             options={{ English: 'ens', Vietnamese: 'vn' }}
             onChange={setLanguage}
-            currentOption={language}
+            currentOption={language === 'pangram' ? 'ens' : language}
         />
     );
 };
