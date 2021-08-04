@@ -1,8 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface CurrentIndexSlice {
+	current: number;
+	next: number;
+}
+
+const initialState: CurrentIndexSlice = {
+	current: 0,
+	next: 1,
+};
+
 const currentIndexSlice = createSlice({
 	name: 'sentenceIndex',
-	initialState: { current: 0, next: 1 },
+	initialState,
 	reducers: {
 		updateIndex(state, action: PayloadAction<{}>) {
 			return { ...state, ...action.payload };

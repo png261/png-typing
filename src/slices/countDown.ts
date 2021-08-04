@@ -1,8 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface CurrentIndexSlice {
+	seconds: number;
+	isCounting: boolean;
+}
+
+const initialState: CurrentIndexSlice = {
+	seconds: 0,
+	isCounting: false,
+};
+
 const currentIndexSlice = createSlice({
 	name: 'countDown',
-	initialState: { seconds: 0, isCounting: false },
+	initialState,
 	reducers: {
 		stopCountDown(state) {
 			state.isCounting = false;

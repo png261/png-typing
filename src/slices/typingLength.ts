@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState: string = 'sentences';
+
 const languageSlice = createSlice({
 	name: 'typingLength',
-	initialState: 'sentences',
+	initialState,
 	reducers: {
 		updateTypingLength(state, action) {
 			return action.payload;

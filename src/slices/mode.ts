@@ -1,12 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: {
+interface ModeSlice {
 	mode: string;
 	value: { times: number; minutes: number };
-} = {
+}
+
+const initialState: ModeSlice = {
 	mode: 'times',
 	value: { times: 5, minutes: 1 },
 };
+
 const modeSlice = createSlice({
 	name: 'mode',
 	initialState,
