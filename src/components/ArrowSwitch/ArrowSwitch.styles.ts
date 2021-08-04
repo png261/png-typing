@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-    display: flex;
-    width: 100%;
+	display: flex;
+	width: 100%;
 `;
 export const Value = styled.p`
-    font-size: 1.8rem;
-    line-height: 1;
-    ${({ currentOption }) =>
-        currentOption === '∞' &&
-        `font-size: 3rem;letter-spacing:-0.7px;line-height:0.6`}
+	font-size: 1.8rem;
+	line-height: 1;
+	${({ currentOption }) =>
+		currentOption === '∞' &&
+		`font-size: 3rem;letter-spacing:-0.7px;line-height:0.6`}
 `;
 
 const Button = `
@@ -27,18 +27,18 @@ const Button = `
     }
 `;
 export const PrevButton = styled.button`
-    ${Button}
+	${Button}
 
-    &:before {
-        right: 50%;
-        border-right: var(--arrow);
-    }
+	&:before {
+		right: 50%;
+		border-right: var(--arrow);
+	}
 `;
 export const NextButton = styled.button`
-    ${Button}
+	${Button}
 
-    &:before {
-        left: 50%;
-        border-left: var(--arrow);
-    }
+	&:before {
+		left: 50%;
+		border-left: var(--arrow);
+	}
 `;

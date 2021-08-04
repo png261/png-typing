@@ -4,23 +4,23 @@ import ALL_DATA from 'src/constants/allData';
 import { randomNumber } from 'src/helpers/random';
 
 const useGetData = () => {
-    const getSentences = () => {
-        const DATA = ALL_DATA[typingLength][language];
-        if (typingLength === 'paragraph') {
-            return DATA[randomNumber(DATA.length)];
-        }
-        return DATA;
-    };
-    const language = useSelector((state) => state.language);
-    const typingLength = useSelector((state) => state.typingLength);
-    const [data, setData] = useState(getSentences);
+	const getSentences = () => {
+		const DATA = ALL_DATA[typingLength][language];
+		if (typingLength === 'paragraph') {
+			return DATA[randomNumber(DATA.length)];
+		}
+		return DATA;
+	};
+	const language = useSelector((state) => state.language);
+	const typingLength = useSelector((state) => state.typingLength);
+	const [data, setData] = useState(getSentences);
 
-    const getNewData = () => setData(getSentences);
-    useLayoutEffect(() => {
-        getNewData();
-    }, [language, typingLength]);
+	const getNewData = () => setData(getSentences);
+	useLayoutEffect(() => {
+		getNewData();
+	}, [language, typingLength]);
 
-    return { data, getNewData };
+	return { data, getNewData };
 };
 
 export default useGetData;

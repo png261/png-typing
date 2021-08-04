@@ -2,23 +2,27 @@
 	"name": "png-typing",
 	"version": "0.1.0",
 	"private": true,
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject",
+		"lint": "eslint --ext js,jsx,ts,tsx src/",
+		"lint:fix": "eslint --fix --ext js,jsx,ts,tsx src/",
+		"prettier": "prettier --check \"src/**/(*.tsx|*.ts|*.jsx|*.js|*.scss|*.css)\"",
+		"prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.jsx|*.js|*.scss|*.css)\""
+	},
 	"dependencies": {
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-redux": "^7.2.4",
+		"@reduxjs/toolkit": "^1.6.1",
 		"react-scripts": "4.0.3",
 		"styled-components": "^5.3.0",
 		"typescript": "^4.3.5",
 		"web-vitals": "^1.1.2"
 	},
-	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
-	},
 	"devDependencies": {
-		"@reduxjs/toolkit": "^1.6.1",
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^11.2.7",
 		"@testing-library/user-event": "^12.8.3",
@@ -26,7 +30,10 @@
 		"@types/node": "^16.4.10",
 		"@types/react": "^17.0.15",
 		"@types/react-dom": "^17.0.9",
-		"node-sass": "^6.0.1"
+		"eslint-config-prettier": "^8.1.0",
+		"eslint-plugin-prettier": "^3.3.1",
+		"node-sass": "^6.0.1",
+		"prettier": "^2.2.1"
 	},
 	"eslintConfig": {
 		"extends": [

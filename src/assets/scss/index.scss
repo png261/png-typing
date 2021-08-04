@@ -2,83 +2,83 @@
 @charset "utf-8";
 /* normal */
 :root {
-    --bg: #e6e6e1;
-    --info003: '';
-    --timebg: #dbdddc;
-    --timebtn: #febf02;
-    --timeclr: #181818;
-    --pangbox: #ccc;
-    --pangbtn: #f4f5f4;
-    --font: #181818;
-    --font2: #ffffff;
-    --boxbg: #f4f4f4;
-    --output: #181818;
-    --input: #444444;
-    --caret: #f2bf01;
-    --gb: #dbdddc;
-    --gbs: #f2bf01;
-    --npt: #898989;
-    --button: #dbdddc;
-    --wrong: #f6646d;
-    --arrow: 0.5rem solid #000000;
-    --vkb: #a1a19d;
-    --reqbox: #febf01;
-    --reqfont: #fff;
-    --reqtext: #000;
-    --reqipt: #fff;
-    --reqcvs: #484848;
-    --reqph: #6f6f6f;
+	--bg: #e6e6e1;
+	--info003: '';
+	--timebg: #dbdddc;
+	--timebtn: #febf02;
+	--timeclr: #181818;
+	--pangbox: #ccc;
+	--pangbtn: #f4f5f4;
+	--font: #181818;
+	--font2: #ffffff;
+	--boxbg: #f4f4f4;
+	--output: #181818;
+	--input: #444444;
+	--caret: #f2bf01;
+	--gb: #dbdddc;
+	--gbs: #f2bf01;
+	--npt: #898989;
+	--button: #dbdddc;
+	--wrong: #f6646d;
+	--arrow: 0.5rem solid #000000;
+	--vkb: #a1a19d;
+	--reqbox: #febf01;
+	--reqfont: #fff;
+	--reqtext: #000;
+	--reqipt: #fff;
+	--reqcvs: #484848;
+	--reqph: #6f6f6f;
 }
 /* dark */
 @media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #222222;
-        --timebg: #222222;
-        --timebtn: #63a080;
-        --timeclr: #fafafa;
-        --pangbox: #222;
-        --pangbtn: #cecece;
-        --font: #cecece;
-        --font2: #f2bf01;
-        --boxbg: #222222;
-        --output: #fff;
-        --input: #cecece;
-        --caret: #63a080;
-        --gb: #8b8b8b;
-        --gbs: #63a080;
-        --npt: #575757;
-        --button: #858585;
-        --wrong: #f6646d;
-        --arrow: 0.5rem solid #aaaeb7;
-        --vkb: #131415;
-        --reqbox: #63a080;
-        --reqfont: #161616;
-        --reqtext: #fff;
-        --reqipt: #161616;
-        --reqcvs: #181818;
-        --reqph: #c2c3c2;
-    }
+	:root {
+		--bg: #222222;
+		--timebg: #222222;
+		--timebtn: #63a080;
+		--timeclr: #fafafa;
+		--pangbox: #222;
+		--pangbtn: #cecece;
+		--font: #cecece;
+		--font2: #f2bf01;
+		--boxbg: #222222;
+		--output: #fff;
+		--input: #cecece;
+		--caret: #63a080;
+		--gb: #8b8b8b;
+		--gbs: #63a080;
+		--npt: #575757;
+		--button: #858585;
+		--wrong: #f6646d;
+		--arrow: 0.5rem solid #aaaeb7;
+		--vkb: #131415;
+		--reqbox: #63a080;
+		--reqfont: #161616;
+		--reqtext: #fff;
+		--reqipt: #161616;
+		--reqcvs: #181818;
+		--reqph: #c2c3c2;
+	}
 }
 
 @import url('https://fonts.googleapis.com/css?family=Fjalla+One|Times+New+Roman|Roboto&display=swap');
 
 /* html reset */
 * {
-    box-sizing: border-box;
-    font: inherit;
+	box-sizing: border-box;
+	font: inherit;
 }
 
 html {
-    font-size: 10px;
-    line-height: 1.5;
+	font-size: 10px;
+	line-height: 1.5;
 }
 body {
-    font-size: 1.2rem;
-    font-family: 'Apple SD Gothic Neo', 'Roboto', sans-serif;
-    margin: 0;
-    background: var(--bg) !important;
-    color: var(--font) !important;
-    font-weight: bold;
+	font-size: 1.2rem;
+	font-family: 'Apple SD Gothic Neo', 'Roboto', sans-serif;
+	margin: 0;
+	background: var(--bg) !important;
+	color: var(--font) !important;
+	font-weight: bold;
 }
 
 h1,
@@ -87,23 +87,23 @@ h3,
 h4,
 h5,
 h6 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: normal;
+	margin: 0;
+	font-size: 1rem;
+	font-weight: normal;
 }
 p {
-    margin: 0;
+	margin: 0;
 }
 a {
-    text-decoration: none;
+	text-decoration: none;
 }
 ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 img {
-    vertical-align: top;
-    border: none;
-    max-width: 100%;
+	vertical-align: top;
+	border: none;
+	max-width: 100%;
 }
