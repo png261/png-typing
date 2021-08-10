@@ -78,12 +78,12 @@ export const Wrapper = styled.div`
 		main {
 			width: 58.1rem;
 			grid-template-areas:
-				'langues result result result result typing typing typing'
-				'langues result result result result typing typing typing'
-				'langues result result result result typing typing typing'
-				'sentences goal speed speed accuracy accuracy count count'
-				'sentences goal speed speed accuracy accuracy count count'
-				'sentences goal author author author author author author'
+				'langues result result result result result typing typing typing'
+				'langues result result result result result typing typing typing'
+				'langues result result result result result typing typing typing'
+				'sentences pangram pangram speed speed accuracy accuracy count count'
+				'sentences goal goal speed speed accuracy accuracy count count'
+				'sentences goal goal author author author author author author'
 				'typing-area typing-area typing-area typing-area typing-area typing-area typing-area typing-area typing-area';
 			grid-template-columns: 14rem 11rem repeat(6, 1fr);
 			.notice,
