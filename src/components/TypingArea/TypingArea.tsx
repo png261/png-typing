@@ -1,5 +1,4 @@
-import {
-	KeyboardEvent,
+import React, {
 	ClipboardEvent,
 	useEffect,
 	useLayoutEffect,
@@ -57,6 +56,7 @@ const TypingArea = () => {
 		resetTyping();
 		goToNextSentence();
 	};
+
 	useLayoutEffect(() => {
 		const setCPM = (cpm: number) => dispatch(updateCPM(cpm));
 		setCPM(getCPM(typedText, stopWatch.timer));
@@ -74,7 +74,7 @@ const TypingArea = () => {
 		e.preventDefault();
 	};
 
-	const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+	const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (typedText.length === 1 && !stopWatch.isCounting) {
 			stopWatch.startCount();
 		}
@@ -96,6 +96,17 @@ const TypingArea = () => {
 	if (input.current) {
 		input.current.focus();
 	}
+
+	useEffect(() => {
+		const reset = (e: KeyboardEvent) => {
+			if (e.code === 'Escape') {
+				resetTyping();
+			}
+		};
+		document.addEventListener('keydown', reset);
+
+		return () => document.removeEventListener('keydown', reset);
+	}, []);
 
 	return (
 		<Wrapper>

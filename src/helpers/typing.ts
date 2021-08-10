@@ -7,7 +7,8 @@ export const getAccuracy = (typed: string, origin: string) => {
 	);
 };
 export const getCPM = (origin: string, milliseconds: number) => {
-	return Math.round((origin.length / (milliseconds / 1000)) * 60) || 0;
+	const cpm = Math.round((origin.length / (milliseconds / 1000)) * 60) || 0;
+	return isFinite(cpm) ? cpm : 0;
 };
 export const getWPM = (typed: string, origin: string, milliseconds: number) => {
 	let words = typed.match(/\b\S+\b/g);
