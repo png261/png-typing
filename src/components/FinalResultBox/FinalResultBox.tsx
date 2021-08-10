@@ -56,11 +56,12 @@ const FinalResultBox = () => {
 	);
 	const dispatch = useDispatch();
 
-	const countDown = useCountDown();
 	const allResult = useSelector((state) => state.results.all);
 	const modeValue = useSelector((state) => state.mode.value);
 
 	const [isShow, setIsShow] = useState(false);
+	const countDownSeconds = useSelector((state) => state.countDown.seconds);
+
 	useEffect(() => {
 		if (mode === 'times' && resultsAvg.length === modeValue.times) {
 			setIsShow(true);
@@ -70,18 +71,17 @@ const FinalResultBox = () => {
 	useEffect(() => {
 		if (
 			mode === 'minutes' &&
-			countDown.seconds === 0 &&
+			countDownSeconds === 0 &&
 			resultsAvg.length > 0
 		) {
 			setIsShow(true);
 		}
-	}, [mode, resultsAvg, countDown.seconds]);
+	}, [mode, resultsAvg, countDownSeconds]);
 
 	useEffect(() => {
 		const hideFinalResultModal = (ev: KeyboardEvent): any => {
 			if (ev.code !== 'Escape') return;
 			setIsShow(false);
-			countDown.stopCount();
 			dispatch(resetResultAvg());
 		};
 

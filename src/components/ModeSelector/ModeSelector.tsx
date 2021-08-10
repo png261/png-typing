@@ -6,8 +6,8 @@ import Switch from '../Switch/Switch';
 import MODE_OPTIONS from 'src/constants/typingMode';
 import { Wrapper } from './ModeSelector.styles';
 import { formatMinute } from 'src/helpers/time';
+import { stopCountDown } from 'src/slices/countDown';
 import { resetResultAvg } from 'src/slices/results';
-import useCountDown from 'src/hooks/useCountDown';
 
 const ModeSelector = () => {
 	const dispatch = useDispatch();
@@ -25,7 +25,8 @@ const ModeSelector = () => {
 		formatMinute(modeValue.minutes * 60)
 	);
 
-	const countDown = useCountDown();
+	const stopCountTime = () => dispatch(stopCountDown());
+	const countDown = useSelector((state) => state.countDown);
 
 	useEffect(() => {
 		if (typeof modeValue.minutes !== 'number') {
@@ -39,7 +40,7 @@ const ModeSelector = () => {
 	}, [countDown, modeValue]);
 
 	useEffect(() => {
-		countDown.stopCount();
+		stopCountTime();
 		dispatch(resetResultAvg());
 	}, [mode, modeValue]);
 

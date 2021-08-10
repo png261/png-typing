@@ -15,13 +15,15 @@ const useCountDown = () => {
 	const startCount = (duration: number) => dispatch(startCountDown(duration));
 
 	useEffect(() => {
-		if (isCounting) {
-			const timeInterval = setInterval(() => {
-				const action = updateCountDownSeconds();
-				dispatch(action);
-			}, 1000);
-			return () => clearInterval(timeInterval);
-		}
+		const timeInterval = setInterval(() => {
+			if (!isCounting) {
+				clearInterval(timeInterval);
+				return;
+			}
+			const action = updateCountDownSeconds();
+			dispatch(action);
+		}, 1000);
+		return () => clearInterval(timeInterval);
 	}, [isCounting]);
 
 	useEffect(() => {

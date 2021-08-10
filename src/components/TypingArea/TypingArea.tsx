@@ -70,8 +70,10 @@ const TypingArea = () => {
 		setACC(getAccuracy(typedText, currentSentence));
 	}, [typedText, resetTyping, currentSentence]);
 
-	const disablePaste = (e: ClipboardEvent<HTMLInputElement>) =>
+	const disablePaste = (e: ClipboardEvent<HTMLInputElement>) => {
 		e.preventDefault();
+	};
+
 	const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
 		if (typedText.length === 1 && !stopWatch.isCounting) {
 			stopWatch.startCount();
@@ -85,16 +87,15 @@ const TypingArea = () => {
 			countDown.startCount(modeValue.minutes * 60);
 		}
 
-		if (e.code === 'Enter' && typedText.length >= currentSentence.length)
+		if (e.code === 'Enter' && typedText.length >= currentSentence.length) {
 			updateResult();
+		}
 	};
 
 	const input = useRef<HTMLInputElement>(null);
-	useEffect(() => {
-		if (input.current) {
-			input.current.focus();
-		}
-	}, []);
+	if (input.current) {
+		input.current.focus();
+	}
 
 	return (
 		<Wrapper>
